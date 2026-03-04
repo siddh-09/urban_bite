@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Explore Menu - Urban Bite</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+
+<div class="logo">
+Urban Bite
+</div>
+
+<a href="{{ url_for('home') }}">Home</a>
+<a href="{{ url_for('menu') }}">Menu</a>
+<a href="{{ url_for('order') }}">Orders</a>
+<a href="{{ url_for('about') }}">About</a>
+<a href="{{ url_for('contact') }}">Contact</a>
+<a href="{{ url_for('login') }}">Login</a>
+
+</header>
+
+<section class="full-menu">
+
+<h1>OUR FULL MENU</h1>
+
+<!-- VEG SECTION -->
+<h2 class="menu-category veg">🥗 Veg Specials</h2>
+<div class="menu-grid" id="veg-container"></div>
+
+<!-- NON VEG SECTION -->
+<h2 class="menu-category nonveg">🍗 Non-Veg Specials</h2>
+<div class="menu-grid" id="nonveg-container"></div>
+
+<h2 class="menu-category fastfood">🍔 Fast Food</h2>
+<div class="menu-grid" id="fastfood-container"></div>
+
+<h2 class="menu-category thali">🍽️ Veg & Non-Veg Thalis</h2>
+<div class="menu-grid" id="thali-container"></div>
+
+<!-- MOCKTAILS -->
+<h2 class="menu-category drink">🍹 Mocktails</h2>
+<div class="menu-grid" id="mocktail-container"></div>
+
+
+<!-- COLD DRINKS -->
+<h2 class="menu-category drink">🥤 Cold Drink</h2>
+<div class="menu-grid" id="cold-container"></div>
+
+
+</section>
+<!-- FOOTER SECTION (MUST BE AFTER CTA) -->
+<footer class="footer">
+
+<div class="footer-container">
+
+<div class="footer-box">
+<h3>URBAN BITE</h3>
+<p>Bringing city flavors to your table since 2024.</p>
+</div>
+
+<div class="footer-box">
+<h3>QUICK LINKS</h3>
+<a href="menu.html">Menu</a>
+<a href="about.html">About</a>
+<a href="contact.html">Contact</a>
+</div>
+
+<div class="footer-box">
+<h3>CONTACT</h3>
+<p>123 Urban Street, City, ST 12345</p>
+<p>contact@urbanbite.com</p>
+<p>(555) 123-4567</p>
+</div>
+
+</div>
+
+<hr>
+
+<p class="copyright">
+© 2024 Urban Bite. All rights reserved.
+</p>
+
+</footer>
+
+<script>
+function loadCategory(category, containerId) {
+    fetch(`/api/products/${category}`)
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById(containerId);
+            container.innerHTML = "";
+
+            data.forEach(product => {
+                const item = `
+                    <div class="menu-item">
+                        <h3>${product.name}</h3>
+                        <p>${product.description}</p>
+                        <span>₹${product.price}</span>
+                        <button onclick="addToCart('${product.name}', ${product.price})">
+                            Add
+                        </button>
+                    </div>
+                `;
+                container.innerHTML += item;
+            });
+        });
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    loadCategory("Veg", "veg-container");
+    loadCategory("Non-Veg", "nonveg-container");
+    loadCategory("Fast Food", "fastfood-container");
+    loadCategory("Thali", "thali-container");
+    loadCategory("Mocktail", "mocktail-container");
+    loadCategory("Cold Drink", "cold-container");
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Orders - Urban Bite</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+.order-section {
+    padding: 140px 60px;
+    background: #000000;
+    min-height: 100vh;
+}
+
+.order-section h1 {
+    padding-top:120px;
+padding-bottom:60px;
+
+text-align:center;
+
+background:#050505;
+
+color:rgb(237, 237, 237);
+
+}
+
+.order-table-wrapper {
+    overflow-x: auto;
+}
+
+.order-table {
+    width: 100%;
+    margin: auto;
+    min-width: 900px; /* prevents table breaking */
+    border-collapse: collapse;
+    background: rgb(0, 0, 0);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(227, 217, 217, 0.956);
+    border-color: #000000;
+}
+
+.order-table th,
+.order-table td {
+    padding: 18px;
+    text-align: left;
+}
+
+.order-table th {
+    background: #000000;
+    color: rgb(255, 255, 255);
+    font-weight: 600;
+}
+
+.order-table tr:nth-child(even) {
+    background: #000000;
+}
+
+
+.status-paid {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.status-pending {
+    color: #ff5a00;
+    font-weight: bold;
+}
+
+/* 📱 Mobile Responsive */
+
+@media (max-width: 768px) {
+
+    .order-section {
+        padding: 120px 20px;
+    }
+
+    .order-section h1 {
+        font-size: 32px;
+    }
+
+}
+
+/* MORE FOODS SECTION */
+
+.more-foods {
+
+margin-top: 80px;
+text-align: center;
+
+}
+
+.more-foods h2 {
+
+font-size: 40px;
+margin-bottom: 40px;
+color: white;
+
+}
+
+.foods-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
+    max-width: 1300px;
+    margin: auto;
+}
+
+
+
+.food-card {
+    background: #111;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+
+.food-card:hover {
+
+transform: translateY(-8px);
+
+}
+
+.food-card img {
+
+width: 100%;
+height: 180px;
+object-fit: cover;
+border-radius: 15px;
+margin-bottom: 15px;
+
+}
+
+.food-card h3 {
+
+color: white;
+margin-bottom: 10px;
+
+}
+
+.food-card p {
+
+color: #bbb;
+font-size: 14px;
+margin-bottom: 15px;
+
+}
+
+.food-price {
+
+color: #ff5a00;
+font-weight: bold;
+font-size: 18px;
+
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+
+.foods-container {
+    flex-direction: column;
+    align-items: center;
+}
+
+}
+@media (max-width: 1200px) {
+    .foods-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .foods-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+.order-info {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.info-box {
+    background: #1d1c1c;
+    padding: 20px 30px;
+    border-radius: 12px;
+    color: white;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+.info-box span {
+    display: block;
+    font-size: 13px;
+    color: #c20c0c;
+    margin-bottom: 5px;
+}
+
+.info-box strong {
+    font-size: 20px;
+}
+
+
+</style>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+
+<div class="logo">
+Urban Bite
+</div>
+
+<nav>
+<a href="{{ url_for('home') }}">Home</a>
+<a href="{{ url_for('menu') }}">Menu</a>
+<a href="{{ url_for('order') }}">Orders</a>
+<a href="{{ url_for('about') }}">About</a>
+<a href="{{ url_for('contact') }}">Contact</a>
+<a href="{{ url_for('login') }}">Login</a>
+
+</nav>
+
+</header>
+
+
+
+<section class="order-section">
+
+<h1>ORDERS</h1>
+
+<div class="order-info">
+    <div class="info-box">
+        <span>Order ID</span>
+        <strong id="order-id"></strong>
+    </div>
+    <div class="info-box">
+        <span>User ID</span>
+        <strong>U001</strong>
+    </div>
+    <div class="info-box">
+        <span>Delivery Address</span>
+        <strong>Not Provided</strong>
+    </div>
+</div>
+
+<div class="order-table-wrapper">
+<table class="order-table">
+
+<thead>
+<tr>
+<th>#</th>
+<th>Food Item</th>
+<th>Quantity</th>
+<th>Price</th>
+<th>Subtotal</th>
+</tr>
+</thead>
+
+<tbody id="cart-body">
+</tbody>
+
+</table>
+</div>
+
+<div style="margin-top:30px; text-align:right; font-size:20px; color:white;">
+Total: ₹<span id="cart-total">0</span>
+</div>
+
+<div style="margin-top:20px;">
+<button onclick="payNow()" style="padding:10px 20px;">Pay Now</button>
+<button onclick="clearCart()" style="padding:10px 20px; background:red; color:white;">Delete Order</button>
+</div>
+
+<h3 style="margin-top:30px; color:white;">
+Payment Status: <span id="payment-status">Pending</span>
+</h3>
+
+</section>
+
+<!-- ADD MORE FOODS SECTION -->
+
+<section class="more-foods">
+
+<h2>ADD MORE TASTY STARTERS FOR YOU</h2>
+
+<div class="foods-container">
+
+<!-- CARD 1 -->
+<div class="food-card">
+<img src="images/chicken-tikka.jpg" alt="Chicken Tikka">
+<h3>Chicken Tikka</h3>
+<p>Spicy grilled chicken cubes marinated in Indian spices.</p>
+<span class="food-price">₹249</span>
+</div>
+
+<!-- CARD 2 -->
+<div class="food-card">
+<img src="images/chicken-kebab.jpg" alt="Chicken Kebab">
+<h3>Chicken Kebab</h3>
+<p>Juicy charcoal roasted kebabs served hot & fresh.</p>
+<span class="food-price">₹199</span>
+</div>
+
+<!-- CARD 3 -->
+<div class="food-card">
+<img src="images/chicken-roll.jpg" alt="Chicken Roll">
+<h3>Chicken Roll</h3>
+<p>Soft wrap filled with spicy chicken and fresh veggies.</p>
+<span class="food-price">₹149</span>
+</div>
+
+<!-- CARD 4 -->
+<div class="food-card">
+<img src="images/chicken-lollipop.jpg" alt="Chicken Masala Lollipop">
+<h3>Chicken Lollipop</h3>
+<p>Crispy fried chicken lollipops tossed in spicy masala sauce.</p>
+<span class="food-price">₹229</span>
+</div>
+
+
+
+</div>
+
+</section>
+
+<!-- FOOTER SECTION (MUST BE AFTER CTA) -->
+<footer class="footer">
+
+<div class="footer-container">
+
+<div class="footer-box">
+<h3>URBAN BITE</h3>
+<p>Bringing city flavors to your table since 2024.</p>
+</div>
+
+<div class="footer-box">
+<h3>QUICK LINKS</h3>
+<a href="menu.html">Menu</a>
+<a href="about.html">About</a>
+<a href="contact.html">Contact</a>
+</div>
+
+<div class="footer-box">
+<h3>CONTACT</h3>
+<p>123 Urban Street, City, ST 12345</p>
+<p>contact@urbanbite.com</p>
+<p>(555) 123-4567</p>
+</div>
+
+</div>
+
+<hr>
+
+<p class="copyright">
+© 2024 Urban Bite. All rights reserved.
+</p>
+
+</footer>
+
+<script>
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let status = localStorage.getItem("paymentStatus") || "Pending";
+
+// Generate or get order ID
+let orderId = localStorage.getItem("orderId");
+if(!orderId){
+    orderId = "ORD" + Math.floor(Math.random() * 100000);
+    localStorage.setItem("orderId", orderId);
+}
+
+document.getElementById("order-id").innerText = orderId;
+
+function renderCart() {
+
+    const tbody = document.getElementById("cart-body");
+    const totalEl = document.getElementById("cart-total");
+    const statusEl = document.getElementById("payment-status");
+
+    tbody.innerHTML = "";
+
+    let total = 0;
+
+    cart.forEach((item, index) => {
+
+        const subtotal = item.price * item.qty;
+        total += subtotal;
+
+        const row = `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${item.name}</td>
+                <td>
+                    <button onclick="changeQty(${index}, -1)">-</button>
+                    ${item.qty}
+                    <button onclick="changeQty(${index}, 1)">+</button>
+                </td>
+                <td>₹${item.price}</td>
+                <td>₹${subtotal}</td>
+            </tr>
+        `;
+
+        tbody.innerHTML += row;
+    });
+
+    totalEl.innerText = total;
+    statusEl.innerText = status;
+}
+
+function changeQty(index, change) {
+
+    cart[index].qty += change;
+
+    if (cart[index].qty <= 0) {
+        cart.splice(index, 1);
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCart();
+}
+
+function payNow() {
+
+    status = "Paid";
+    localStorage.setItem("paymentStatus", status);
+
+    saveOrderHistory();
+
+    renderCart();
+}
+
+function clearCart() {
+
+    localStorage.removeItem("cart");
+    localStorage.removeItem("paymentStatus");
+    localStorage.removeItem("orderId");
+
+    cart = [];
+    status = "Pending";
+
+    renderCart();
+}
+
+function saveOrderHistory() {
+
+    let history = JSON.parse(localStorage.getItem("orderHistory")) || [];
+
+    history.push({
+        orderId: orderId,
+        userId: "U001",
+        date: new Date().toLocaleString(),
+        items: cart,
+        total: document.getElementById("cart-total").innerText,
+        status: status
+    });
+
+    localStorage.setItem("orderHistory", JSON.stringify(history));
+}
+
+renderCart();
+
+</script>
+
+
+
+</body>
+</html>
