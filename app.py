@@ -66,6 +66,7 @@ def get_products_by_category(category):
 if __name__ == "__main__":
     app.run(debug=True)
 
+
 # 🔹 API Route: Get All Products
 @app.route("/api/products")
 def get_products():
