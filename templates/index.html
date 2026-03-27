@@ -17,9 +17,8 @@
 <!-- NAVBAR -->
 <header class="navbar">
 
-<div class="logo">
-Urban Bite
-</div>
+<div class="logo">Urban Bite</div>
+
 
 <a href="{{ url_for('home') }}">Home</a>
 <a href="{{ url_for('menu') }}">Menu</a>
@@ -28,29 +27,52 @@ Urban Bite
 <a href="{{ url_for('contact') }}">Contact</a>
 <a href="{{ url_for('login') }}" class="btn">Login</a> 
 
-
 </header>
 
 
 <!-- HERO SECTION -->
-
 <section class="hero">
-
 <div class="hero-content">
+<div id="user-info" style="color:white;"></div>
 
 <h1>
-Fresh Flavors <br>
-From The City's Heart
+Order Food Online <br>
+From The City's Best Kitchens
 </h1>
 
-
 <p>
-Discover handcrafted meals made with passion and premium ingredients by our shops.
+Discover top-rated meals, fast delivery, and endless food choices near you.
 </p>
 
 
-<a href="{{url_for('explore')}}" class="btn-primary">Explore Menu</a>
+</div>
+</section>
 
+
+<!-- 🔥 SEARCH SECTION -->
+<section class="search-section">
+
+<div class="search-container">
+    <h1>
+Fresh Flavors <br>
+From The City's Heart
+    </h1>
+
+<p>
+Find your next meal from our curated selection of the city's best dishes, delivered fast to your door.
+</p>
+
+    <!-- 🔍 FOOD SEARCH -->
+    <div class="search-box">
+        <input type="text" id="search-input" placeholder="Search food...">
+        <div id="search-results"></div>
+    </div>
+
+    <!-- 📍 LOCATION -->
+    <div class="location-box">
+        <input type="text" id="location-input" placeholder="Enter your location...">
+        <div id="location-suggestions"></div>
+    </div>
 
 </div>
 
@@ -58,63 +80,42 @@ Discover handcrafted meals made with passion and premium ingredients by our shop
 
 
 <!-- SIGNATURE DISHES -->
+<section class="food-section">
 
-<section class="dishes">
+<h1>QUALITY AND TASTY FOODS ON OUR SIDES</h1>
 
-<h2>QUALITY AND TASTY FOODS ON OUR SIDES </h2>
+<div class="food-container">
 
-<div class="dish-container">
-
-
-<div class="dish-card">
-
-<img src="{{ url_for('static', filename='images/burger.jpg') }}">
-
-<h3>Urban Classic Burger</h3>
-
-<p>Juicy Angus chicken layered with melted cheddar, caramelized onions, and our signature house sauce — grilled to perfection for a bold, satisfying bite.</p>
-
+<div class="food-card">
+<img src="{{ url_for('static', filename='images/Chicken Afghani.jpg') }}"> 
+<h3>Chicken Afghani</h3>
+<p>Delicious chicken Afghani with aromatic spices</p>
 </div>
 
-
-<div class="dish-card">
-
+<div class="food-card">
 <img src="{{ url_for('static', filename='images/pizza.jpg') }}">
-
-<h3>Woodfire Pizza</h3>
-
-<p>Wood-fired pizza topped with premium pepperoni, rich tomato sauce, and fresh mozzarella for an authentic Italian flavor.</p>
-
+<h3>Chicken Supreme Pizza</h3>
+<p>Fresh baked pizza with toppings</p>
 </div>
 
-
-<div class="dish-card">
-<img src="{{ url_for('static', filename='images/sushi.jpg') }}">
-
-<h3>Sushi Platter</h3>
-
-<p>A fresh selection of salmon, tuna, and avocado rolls crafted with precision and served with traditional sides.</p>
-
+<div class="food-card">
+<img src="{{ url_for('static', filename='images/paneer.jpg') }}">
+<h3>Shahi Paneer</h3>
+<p>Rich and creamy Kashmiri-style paneer</p>
 </div>
 
-<div class="dish-card">
-
-<img src="{{ url_for('static', filename='images/thali.jpg') }}">
-
-<h3>Royal Thali Special</h3>
-
-<p>A wholesome platter featuring flavorful curries, soft rotis, aromatic rice, and classic sides — a complete feast in every bite.</p>
-
+<div class="food-card">
+<img src="{{ url_for('static', filename='images/chicken special thali.jpg') }}">
+<h3>Special Chicken Thali</h3>
+<p>Complete Indian meal</p>
 </div>
 
 </div>
+
 </section>
 
 
-
 <!-- FOOTER -->
-
-
 <footer class="footer">
 
 <div class="footer-container">
@@ -126,9 +127,9 @@ Discover handcrafted meals made with passion and premium ingredients by our shop
 
 <div class="footer-box">
 <h3>QUICK LINKS</h3>
-<a href="menu.html">Menu</a>
-<a href="about.html">About</a>
-<a href="contact.html">Contact</a>
+<a href="{{ url_for('home') }}">Home</a> 
+<a href="{{ url_for('about') }}">About</a>
+<a href="{{ url_for('contact') }}">Contact</a>
 </div>
 
 <div class="footer-box">
@@ -148,9 +149,7 @@ Discover handcrafted meals made with passion and premium ingredients by our shop
 
 </footer>
 
-
 <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-
 
 </body>
 </html>

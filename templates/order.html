@@ -91,8 +91,8 @@ color:rgb(237, 237, 237);
 
 .more-foods {
 
-margin-top: 80px;
-text-align: center;
+padding: 60px 20px; text-align: center;
+background: #ff7a00;
 
 }
 
@@ -252,11 +252,11 @@ Urban Bite
     </div>
     <div class="info-box">
         <span>User ID</span>
-        <strong>U001</strong>
+        <strong id="user-id">Loading...</strong>
     </div>
     <div class="info-box">
         <span>Delivery Address</span>
-        <strong>Not Provided</strong>
+        <strong id="delivery-address">Not Provided</strong>
     </div>
 </div>
 
@@ -272,7 +272,6 @@ Urban Bite
 <th>Subtotal</th>
 </tr>
 </thead>
-
 <tbody id="cart-body">
 </tbody>
 
@@ -285,8 +284,42 @@ Total: ₹<span id="cart-total">0</span>
 
 <div style="margin-top:20px;">
 <button onclick="payNow()" style="padding:10px 20px;">Pay Now</button>
-<button onclick="clearCart()" style="padding:10px 20px; background:red; color:white;">Delete Order</button>
+<div id="payment-box" style="display:none; text-align:center; margin-top:30px;">
+
+    <h2 style="color:white;"> </h2>
+
+    <img id="qr-img" style="width:200px; margin:20px 0; border-radius:10px;">
+
+    <p style="color:white;">👉 Pay Here</p>
+
+    <!-- 🔥 3 STEPS -->
+    <div style="display:flex; justify-content:center; align-items:center; gap:15px; margin-top:25px;">
+
+        <div class="step active" id="step1">✔</div>
+        <div class="line"></div>
+
+        <div class="step" id="step2">🚴</div>
+        <div class="line"></div>
+
+        <div class="step" id="step3">📦</div>
+
+    </div>
+
+    <p id="status-text" style="color:white; margin-top:15px;">
+        Waiting for Payment...
+    </p>
+
 </div>
+<button onclick="clearCart()" style="padding:10px 20px; background:red; color:white;">Delete Order</button>
+<!-- 🔥 NEW BUTTON -->
+    <button onclick="window.location.href='/explore-menu'" style="
+        padding:10px 20px;  background:#ff6b00; color:white; border:none; border-radius:6px; cursor:pointer;font-weight:bold; ">
+        + Add More Food
+    </button>
+
+</div>
+
+
 
 <h3 style="margin-top:30px; color:white;">
 Payment Status: <span id="payment-status">Pending</span>
@@ -304,34 +337,87 @@ Payment Status: <span id="payment-status">Pending</span>
 
 <!-- CARD 1 -->
 <div class="food-card">
-<img src="images/chicken-tikka.jpg" alt="Chicken Tikka">
+<img src="{{ url_for('static', filename='images/chicken-tikka.jpg') }}" alt="Chicken Tikka">
 <h3>Chicken Tikka</h3>
 <p>Spicy grilled chicken cubes marinated in Indian spices.</p>
 <span class="food-price">₹249</span>
+<button onclick="addToCart('Chicken Tikka', 249)" style="
+    margin-top:10px;
+    width:35px;
+    height:35px;
+    border-radius:50%;
+    background:#ff6b00;
+    color:white;
+    border:none;
+    font-size:18px;
+    cursor:pointer;
+">
++
+</button>
+
 </div>
 
 <!-- CARD 2 -->
 <div class="food-card">
-<img src="images/chicken-kebab.jpg" alt="Chicken Kebab">
+<img src="{{ url_for('static', filename='images/chicken-kebab.jpg') }}" alt="Chicken Kebab">
 <h3>Chicken Kebab</h3>
 <p>Juicy charcoal roasted kebabs served hot & fresh.</p>
 <span class="food-price">₹199</span>
+<button onclick="addToCart('Chicken Kebab', 199)" style="
+    margin-top:10px;
+    width:35px;
+    height:35px;
+    border-radius:50%;
+    background:#ff6b00;
+    color:white;
+    border:none;
+    font-size:18px;
+    cursor:pointer;
+">
++
+</button>
 </div>
 
 <!-- CARD 3 -->
 <div class="food-card">
-<img src="images/chicken-roll.jpg" alt="Chicken Roll">
+<img src="{{ url_for('static', filename='images/chicken-roll.jpg') }}" alt="Chicken Roll">
 <h3>Chicken Roll</h3>
 <p>Soft wrap filled with spicy chicken and fresh veggies.</p>
 <span class="food-price">₹149</span>
+<button onclick="addToCart('Chicken Roll', 149)" style="
+    margin-top:10px;
+    width:35px;
+    height:35px;
+    border-radius:50%;
+    background:#ff6b00;
+    color:white;
+    border:none;
+    font-size:18px;
+    cursor:pointer;
+    ">
++
+</button>
+
 </div>
 
 <!-- CARD 4 -->
 <div class="food-card">
-<img src="images/chicken-lollipop.jpg" alt="Chicken Masala Lollipop">
+<img src="{{ url_for('static', filename='images/chicken-lollipop.jpg') }}" alt="Chicken Lollipop">
 <h3>Chicken Lollipop</h3>
 <p>Crispy fried chicken lollipops tossed in spicy masala sauce.</p>
 <span class="food-price">₹229</span>
+<button onclick="addToCart('Chicken Lollipop', 229)" style="
+    margin-top:10px;
+    width:35px;
+    height:35px;
+    border-radius:50%;
+    background:#ff6b00;
+    color:white;
+    border:none;
+    font-size:18px;
+    cursor:pointer;
+    ">
++</button>
 </div>
 
 
@@ -376,18 +462,27 @@ Payment Status: <span id="payment-status">Pending</span>
 
 <script>
 
+// =======================
+// 🛒 LOAD CART
+// =======================
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 let status = localStorage.getItem("paymentStatus") || "Pending";
 
-// Generate or get order ID
+// =======================
+// 🆔 ORDER ID
+// =======================
 let orderId = localStorage.getItem("orderId");
-if(!orderId){
+
+if (!orderId) {
     orderId = "ORD" + Math.floor(Math.random() * 100000);
     localStorage.setItem("orderId", orderId);
 }
 
 document.getElementById("order-id").innerText = orderId;
 
+// =======================
+// 📦 RENDER CART
+// =======================
 function renderCart() {
 
     const tbody = document.getElementById("cart-body");
@@ -395,12 +490,13 @@ function renderCart() {
     const statusEl = document.getElementById("payment-status");
 
     tbody.innerHTML = "";
-
     let total = 0;
 
     cart.forEach((item, index) => {
 
-        const subtotal = item.price * item.qty;
+        let qty = item.quantity || 1;
+
+        const subtotal = item.price * qty;
         total += subtotal;
 
         const row = `
@@ -409,7 +505,7 @@ function renderCart() {
                 <td>${item.name}</td>
                 <td>
                     <button onclick="changeQty(${index}, -1)">-</button>
-                    ${item.qty}
+                    <span>${qty}</span>
                     <button onclick="changeQty(${index}, 1)">+</button>
                 </td>
                 <td>₹${item.price}</td>
@@ -424,11 +520,35 @@ function renderCart() {
     statusEl.innerText = status;
 }
 
+// =======================
+// ➕ ADD TO CART
+// =======================
+function addToCart(name, price) {
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    let item = cart.find(i => i.name === name);
+
+    if (item) {
+        item.quantity++;
+    } else {
+        cart.push({ name, price, quantity: 1 });
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    // 🔥 reload cart
+    window.location.reload();
+}
+
+// =======================
+// 🔁 CHANGE QTY
+// =======================
 function changeQty(index, change) {
 
-    cart[index].qty += change;
+    cart[index].quantity = (cart[index].quantity || 1) + change;
 
-    if (cart[index].qty <= 0) {
+    if (cart[index].quantity <= 0) {
         cart.splice(index, 1);
     }
 
@@ -436,45 +556,92 @@ function changeQty(index, change) {
     renderCart();
 }
 
+// =======================
+// 💳 PAYMENT
+// =======================
 function payNow() {
-
     status = "Paid";
     localStorage.setItem("paymentStatus", status);
-
-    saveOrderHistory();
-
     renderCart();
 }
 
+// =======================
+// 🗑 CLEAR
+// =======================
 function clearCart() {
+    localStorage.clear();
+    location.reload();
+}
 
-    localStorage.removeItem("cart");
-    localStorage.removeItem("paymentStatus");
-    localStorage.removeItem("orderId");
+// =======================
+// 📍 LOCATION SHOW
+// =======================
+document.addEventListener("DOMContentLoaded", function () {
 
-    cart = [];
-    status = "Pending";
+    let location = localStorage.getItem("userLocation");
+
+    if (location) {
+        document.getElementById("delivery-address").innerText = location;
+    } else {
+        document.getElementById("delivery-address").innerText = "Select Location First";
+    }
 
     renderCart();
-}
+});
 
-function saveOrderHistory() {
 
-    let history = JSON.parse(localStorage.getItem("orderHistory")) || [];
+document.addEventListener("DOMContentLoaded", function () {
 
-    history.push({
-        orderId: orderId,
-        userId: "U001",
-        date: new Date().toLocaleString(),
-        items: cart,
-        total: document.getElementById("cart-total").innerText,
-        status: status
+    let user = JSON.parse(localStorage.getItem("user"));
+
+    if (user) {
+        document.getElementById("user-id").innerText = user.user_id;
+    }
+
+});
+
+
+function payNow() {
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let user = JSON.parse(localStorage.getItem("user"));
+
+    let total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+    fetch("/api/create-order", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            user_id: user.user_id,
+            total: total
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+
+        // 🔥 ORDER ID SHOW
+        document.getElementById("order-id").innerText = data.order_id;
+
+        // QR SHOW
+        document.getElementById("payment-box").style.display = "block";
+
     });
-
-    localStorage.setItem("orderHistory", JSON.stringify(history));
 }
 
-renderCart();
+document.addEventListener("DOMContentLoaded", function () {
+
+    let user = JSON.parse(localStorage.getItem("user"));
+
+    if (user) {
+        document.getElementById("user-id").innerText =  
+        "👤 " + user.name + " (" + user.user_id + ")";
+    } else {
+        document.getElementById("user-id").innerText = "Guest";
+    }
+
+});
 
 </script>
 

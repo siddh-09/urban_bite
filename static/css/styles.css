@@ -113,6 +113,8 @@ background:#ff9d3a;
 
 /* HERO */
 
+
+
 .hero{
 
 height:100vh;
@@ -190,7 +192,135 @@ background:#ff9d3a;
 
 }
 
+/* 🔥 SEARCH SECTION FIX */
 
+.search-section{
+position:center;;
+margin-top:-300px;
+top: -60px;
+z-index:10;
+display:flex;
+justify-content:center; 
+}
+
+.search-container{
+background: rgba(0,0,0,0.6);  /* ✅ FIXED */
+backdrop-filter: blur(15px);
+padding:40px;
+border-radius:20px;
+display:flex;
+gap:20px;
+align-items:center;
+overflow: visible !important;
+}
+
+.search-box{
+position:relative;
+}
+
+.search-box input{
+padding:15px 25px;
+border-radius:10px;
+border:none;
+outline:none;
+width:250px;
+}
+
+#search-results{
+    position: absolute;
+    top: 45px;
+    left: 0;
+    width: 100%;
+
+    background: black;
+    color: white;
+
+    border-radius: 10px;
+
+    max-height: 250px;     /* 🔥 LIMIT HEIGHT */
+    overflow-y: auto;      /* 🔥 SCROLL ENABLE */
+
+    z-index: 9999;
+}
+
+/* 🔥 LOCATION */
+
+.location-box{
+background: rgba(0,0,0,0.6);  /* ✅ FIXED */
+padding:10px 20px;
+border-radius:15px;
+color:white;
+}
+
+#location-input{
+padding:10px 15px;
+border-radius:20px;
+border:none;
+outline:none;
+width:250px;
+}
+
+/* DROPDOWN */
+#location-suggestions{
+position:absolute;
+top:45px;
+left:0;
+background:rgb(0, 0, 0);
+color:rgb(255, 255, 255);
+width:100%;
+border-radius:10px;
+max-height:200px;
+overflow-y:auto;
+z-index:100;
+}
+
+/* 🔥 FIX DROPDOWN POSITION */
+
+.search-box,
+.location-box {
+    position: relative;
+}
+/* 🔥 SERVICES FIX */
+
+.services{
+margin-top:60px;
+display:flex;
+justify-content:center;
+}
+
+.service-card{
+background: rgba(0,0,0,0.6);  /* ✅ FIXED */
+backdrop-filter:blur(15px);
+padding:25px;
+border-radius:20px;
+width:220px;
+text-align:center;
+color:white;
+transition:0.3s;
+}
+
+.service-card:hover{
+transform:translateY(-10px);
+background:rgba(255,255,255,0.2);
+}
+
+.service-card{
+padding:35px;
+}
+
+.service-card h2{
+color:#ff6b00;
+}
+
+.service-card button{
+margin-top:10px;
+padding:8px 18px;
+background:#ff6b00;
+color:white;
+border:none;
+border-radius:20px;
+cursor:pointer;
+}
 
 /* DISHES */
 
@@ -275,6 +405,56 @@ font-weight:bold;
 
 }
 
+
+.food-section{
+background:#0a0a0a;
+color:white;
+padding:50px 20px;
+text-align:center;
+}
+
+.food-container{
+display:flex;
+justify-content:center;
+gap:30px;
+flex-wrap:wrap;
+}
+
+.food-card {
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 20px;
+
+    /* ❌ width remove (important fix) */
+    width: 100%;
+    max-width: 220px;
+
+    transition: 0.3s ease;
+    position: relative;
+
+    /* 🔥 CONTROLLED GLOW (light, not breaking layout) */
+    box-shadow: 
+        0 0 15px rgba(255,255,255,0.08),
+        0 0 30px rgba(255,255,255,0.05);
+}
+
+.food-card:hover {
+    transform: translateY(-8px);
+
+    box-shadow: 
+        0 0 25px rgba(255,255,255,0.15),
+        0 0 50px rgba(255,255,255,0.08);
+}
+
+.food-card img{
+width:100%;
+border-radius:15px;
+}
+
+.food-card h3{
+margin:10px 0;
+color:#ff5200;
+}
 
 
 /* FOOTER */
@@ -1139,5 +1319,101 @@ box-shadow:0 15px 40px rgba(0,0,0,0.2);
 
 }
 
+.qty-btn {
+    background: #ff6b00;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin: 0 5px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.qty-btn {
+    background: linear-gradient(135deg, #ff6b00, #ff8c00);
+    color: white;
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: all 0.2s ease;
+}
+
+/* 🔥 hover effect */
+.qty-btn:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 10px rgba(255, 115, 0, 0.6);
+}
+
+/* 🧊 click effect */
+.qty-btn:active {
+    transform: scale(0.95);
+}
+
+/* number style */
+.qty-number {
+    margin: 0 8px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+}
 
 
+.step {
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    background:#333;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:18px;
+}
+
+.step.active {
+    background:#ff6b00;
+}
+
+.line {
+    width:50px;
+    height:3px;
+    background:#555;
+}
+
+
+#toast {
+    position: fixed !important;
+
+    bottom: 30px !important;   /* 👈 niche fix */
+    right: 30px !important;    /* 👈 right side */
+
+    top: auto !important;      /* 👈 upar hata diya */
+    left: auto !important;
+
+    background: #1f1f1f;
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    font-weight: 500;
+    z-index: 9999;
+
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.4s ease;
+    border-left: 5px solid #ff6b00;
+}
+
+#toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}

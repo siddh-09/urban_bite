@@ -27,6 +27,9 @@ Urban Bite
 <section class="full-menu">
 
 <h1>OUR FULL MENU</h1>
+<!-- STARTERS -->
+<h2 class="menu-category starter">🍢 Starters</h2>
+<div class="menu-grid" id="starter-container"></div>
 
 <!-- VEG SECTION -->
 <h2 class="menu-category veg">🥗 Veg Specials</h2>
@@ -36,11 +39,17 @@ Urban Bite
 <h2 class="menu-category nonveg">🍗 Non-Veg Specials</h2>
 <div class="menu-grid" id="nonveg-container"></div>
 
+<!-- FAST FOOD -->
 <h2 class="menu-category fastfood">🍔 Fast Food</h2>
 <div class="menu-grid" id="fastfood-container"></div>
 
+<!-- THALI --> 
 <h2 class="menu-category thali">🍽️ Veg & Non-Veg Thalis</h2>
 <div class="menu-grid" id="thali-container"></div>
+
+<!-- SIGNATURE DISHES -->
+<h2 class="menu-category signature"> 🌟 Signature Dishes</h2> 
+<div class="menu-grid" id="signature-container"></div> 
 
 <!-- MOCKTAILS -->
 <h2 class="menu-category drink">🍹 Mocktails</h2>
@@ -86,40 +95,7 @@ Urban Bite
 </p>
 
 </footer>
-
-<script>
-function loadCategory(category, containerId) {
-    fetch(`/api/products/${category}`)
-        .then(response => response.json())
-        .then(data => {
-            const container = document.getElementById(containerId);
-            container.innerHTML = "";
-
-            data.forEach(product => {
-                const item = `
-                    <div class="menu-item">
-                        <h3>${product.name}</h3>
-                        <p>${product.description}</p>
-                        <span>₹${product.price}</span>
-                        <button onclick="addToCart('${product.name}', ${product.price})">
-                            Add
-                        </button>
-                    </div>
-                `;
-                container.innerHTML += item;
-            });
-        });
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-    loadCategory("Veg", "veg-container");
-    loadCategory("Non-Veg", "nonveg-container");
-    loadCategory("Fast Food", "fastfood-container");
-    loadCategory("Thali", "thali-container");
-    loadCategory("Mocktail", "mocktail-container");
-    loadCategory("Cold Drink", "cold-container");
-});
-</script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
 </body>
 </html>
