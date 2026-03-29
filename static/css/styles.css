@@ -138,13 +138,13 @@ text-align:center;
 
 .hero-content{
 
-background:rgba(0,0,0,0.5);
+background:rgba(0, 0, 0, 0.5);
 
 padding:40px;
 
 border-radius:15px;
 
-backdrop-filter:blur(10px);
+backdrop-filter:blur(20px);
 
 }
 
@@ -153,7 +153,8 @@ backdrop-filter:blur(10px);
 
 font-size:48px;
 
-margin-bottom:20px;
+margin-bottom:10px;
+color: #ffffff;
 
 }
 
@@ -1416,4 +1417,28 @@ box-shadow:0 15px 40px rgba(0,0,0,0.2);
 #toast.show {
     opacity: 1;
     transform: translateY(0);
+}
+
+.register-btn {
+    background: linear-gradient(135deg, #ff7a18, #ff3d00);
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+    box-shadow: 0 5px 15px rgba(255, 122, 24, 0.4);
+}
+
+/* Hover effect 🔥 */
+.register-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 61, 0, 0.6);
+}
+
+/* Click effect */
+.register-btn:active {
+    transform: scale(0.95);
 }
