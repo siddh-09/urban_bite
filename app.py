@@ -96,9 +96,9 @@ def get_products_by_category(category):
     return jsonify(products)
 
 
-# ===============================
+# ==============================
 # 🔹 SEARCH API
-# ===============================
+# ==============================
 @app.route("/api/search")
 def search_products():
     query = request.args.get("q")
