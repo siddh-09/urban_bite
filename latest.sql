@@ -214,6 +214,44 @@ ALTER SEQUENCE public.order_items_id_seq OWNED BY public.order_items.id;
 
 
 --
+-- Name: orderid; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.orderid (
+    id integer NOT NULL,
+    order_id character varying(20),
+    user_id character varying(20),
+    total integer,
+    status character varying(50),
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ALTER TABLE public.orderid OWNER TO postgres;
+
+--
+-- Name: orderid_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.orderid_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.orderid_id_seq OWNER TO postgres;
+
+--
+-- Name: orderid_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.orderid_id_seq OWNED BY public.orderid.id;
+
+
+--
 -- Name: orders; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -376,6 +414,13 @@ ALTER TABLE ONLY public.order_items ALTER COLUMN id SET DEFAULT nextval('public.
 
 
 --
+-- Name: orderid id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orderid ALTER COLUMN id SET DEFAULT nextval('public.orderid_id_seq'::regclass);
+
+
+--
 -- Name: orders id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -408,6 +453,18 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 --
 
 COPY public.order_items (id, order_id, product_id, quantity, subtotal) FROM stdin;
+\.
+
+
+--
+-- Data for Name: orderid; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.orderid (id, order_id, user_id, total, status, created_at) FROM stdin;
+1	ORD13843	U3165	2461	Pending	2026-03-27 17:47:24.132364
+4	ORD13840	U3165	2461	Pending	2026-03-27 17:47:20.94655
+3	ORD13843	U3165	2461	Pending	2026-03-27 17:47:24.128696
+2	ORD13842	U3165	2461	Pending	2026-03-27 17:47:24.113814
 \.
 
 
@@ -531,6 +588,13 @@ SELECT pg_catalog.setval('public.order_items_id_seq', 1, false);
 
 
 --
+-- Name: orderid_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.orderid_id_seq', 4, true);
+
+
+--
 -- Name: orders_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -564,6 +628,14 @@ SELECT pg_catalog.setval('public.users_id_seq', 1, false);
 
 ALTER TABLE ONLY public.order_items
     ADD CONSTRAINT order_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: orderid orderid_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orderid
+    ADD CONSTRAINT orderid_pkey PRIMARY KEY (id);
 
 
 --
