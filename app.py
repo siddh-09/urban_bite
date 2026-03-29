@@ -2,11 +2,14 @@ from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS
 import psycopg2
 import psycopg2.extras
+import time
 
 app = Flask(__name__)
 CORS(app)
 
-# 🔹 Database Connection
+# ===============================
+# 🔹 DATABASE CONNECTION
+# ===============================
 def get_db_connection():
     try:
         conn = psycopg2.connect(
@@ -15,16 +18,18 @@ def get_db_connection():
             user="postgres",
             password="root"
         )
-        print("DB Connected ")
+        print("✅ DB Connected")
         return conn
     except Exception as e:
-        print("DB Error :", e)
+        print("❌ DB Error:", e)
 
 
-# 🔹 Page Routes
+# ===============================
+# 🔹 PAGE ROUTES
+# ===============================
 @app.route("/")
 def home():
-    return render_template("index.html")
+    return render_template("index.html") 
 
 @app.route("/menu")
 def menu():
@@ -55,7 +60,9 @@ def explore():
     return render_template("explore-menu.html")
 
 
-# 🔹 API: All Products
+# ===============================
+# 🔹 PRODUCTS API
+# ===============================
 @app.route("/api/products")
 def get_products():
     conn = get_db_connection()
@@ -67,10 +74,9 @@ def get_products():
     cur.close()
     conn.close()
 
-    return jsonify(products) 
+    return jsonify(products)
 
 
-# 🔹 API: Category Wise
 @app.route("/api/products/<category>")
 def get_products_by_category(category):
     conn = get_db_connection()
@@ -89,7 +95,10 @@ def get_products_by_category(category):
 
     return jsonify(products)
 
-# 🔥 API: SEARCH (FIXED)
+
+# ===============================
+# 🔹 SEARCH API
+# ===============================
 @app.route("/api/search")
 def search_products():
     query = request.args.get("q")
@@ -111,7 +120,7 @@ def search_products():
         '%' + query.lower() + '%'
     ))
 
-    results = cur.fetchall()   # 🔥 IMPORTANT
+    results = cur.fetchall()
 
     cur.close()
     conn.close()
@@ -119,10 +128,9 @@ def search_products():
     return jsonify(results)
 
 
-
-
-import time  # 🔥 ADD THIS
-
+# ===============================
+# 🔹 REGISTER API
+# ===============================
 @app.route("/api/register", methods=["POST"])
 def register_user():
 
@@ -133,7 +141,8 @@ def register_user():
     password = data["password"]
     phone = data["phone"]
 
-    user_id = "U" + str(int(time.time()))[-4:]  # simple unique id
+    # 🔥 UNIQUE USER ID
+    user_id = "U" + str(int(time.time()))[-4:]
 
     conn = get_db_connection()
     cur = conn.cursor()
@@ -150,6 +159,9 @@ def register_user():
     return jsonify({"message": "Registered Successfully"})
 
 
+# ===============================
+# 🔹 LOGIN API
+# ===============================
 @app.route("/api/login", methods=["POST"])
 def login_user():
 
@@ -174,8 +186,10 @@ def login_user():
     else:
         return jsonify({"error": "Invalid credentials"}), 401
 
-import time
 
+# ===============================
+# 🔹 CREATE ORDER API
+# ===============================
 @app.route("/api/create-order", methods=["POST"])
 def create_order():
 
@@ -196,12 +210,14 @@ def create_order():
     """, (order_id, user_id, total, "Pending"))
 
     conn.commit()
-
     cur.close()
     conn.close()
 
     return jsonify({"order_id": order_id})
 
-# 🔹 RUN APP (ALWAYS LAST)
+
+# ===============================
+# 🔹 RUN APP
+# ===============================
 if __name__ == "__main__":
     app.run(debug=True)
